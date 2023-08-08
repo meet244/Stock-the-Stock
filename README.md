@@ -20,7 +20,7 @@ The provided Python script analyzes historical stock data of a chosen stock (BSE
 - `is_buying`: Indicator of buying status (1 for buying, 0 for not buying).
 - `indicator`: A value indicating whether to buy (1), sell (0), or hold (between 0 and 1) based on the percentage change.
 
-### Final Decision 🚀📉
+### Final Decision 🚀
 The script concludes by providing a final decision: Buy, Sell, or Hold, based on the calculated indicator value. The indicator value is a reflection of the percentage change from the peak value.
 
 Feel free to customize and improve the script according to your needs and desired level of sophistication.
