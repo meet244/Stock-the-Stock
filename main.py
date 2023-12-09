@@ -1,12 +1,7 @@
 # Import necessary libraries
-from datetime import datetime, timedelta
 import yfinance as yf
-# Import necessary libraries
+from datetime import date
 import matplotlib.pyplot as plt
-
-# Initialize lists to store x and y values for plotting
-x_values = []
-y_values = []
 
 # Function to calculate the average of a list of numbers
 def calculate_average(numbers):
@@ -15,114 +10,66 @@ def calculate_average(numbers):
     return sum(numbers) / len(numbers)
 
 # Define the BSE Sensex ticker
-bse_sensex = yf.Ticker("^BSESN")
-
-# Get the current date and time
-current_date = datetime.now()
-
-# Define a time period of 25 years ago
-years_ago = timedelta(days=365 * 25)
-new_date = current_date - years_ago
-
-# Format the new date as a string
-formatted_date = new_date.strftime('%Y-%m-%d')
+# bse_sensex = yf.Ticker("^BSESN")
+bse_sensex = yf.Ticker("^GSPC")
 
 # Get historical data for BSE Sensex from the start date
-historical_data = bse_sensex.history(start=formatted_date)
-
-
-# Reverse the order of historical data
-historical_data = historical_data.iloc[::-1]
+today = date.today().strftime("%Y-%m-%d")
+historical_data = bse_sensex.history(start="1970-01-01", end=today)
 
 # Define a percentage change threshold
-percent = 17  # Change this according to your need to improve accuracy
+percent = 20 # Change this according to your need to improve accuracy
 
-# Initialize variables for tracking peak, current close, buying status, and indicator
-high_peak = 0
+# Initialize variables to track peaks and color plotting
+peaks = []
+fall_points = []
+rise_points = []
+color = 'grey'
+point = 0
+point_index = 0
 fallen = False
-# peak = 1
-# current_close = 0
-# is_buying = 0
-# indicator = 0
+returns = [] # list of returns
+buy_point = 0
 
-# Find the highest close value in historical data
-highest_close = historical_data['Close'].max()
-
-# Loop through the historical data to analyze and make decisions
-for date_str, row in historical_data.iterrows():
-    # Convert date string to a datetime object
-    date_obj = datetime.strptime(date_str.strftime("%Y-%m-%d"), "%Y-%m-%d")
+# Calculate peaks and market falls/rises
+for index, row in historical_data.iterrows():
+    # Access the data in each row using row['column_name']
+    # Perform necessary operations on the data
+    close = row['Close']
+    if(not fallen and close>point):
+        point=close
+        point_index=index
     
-    # Get the current close value
-    current_close = int(row["Close"])
+    # check if the fall happens
+    if(not fallen and close<=point*(1-percent/100)):
+        fall_points.append((index,close))
+        fallen=True
+        buy_point=close
+        # mark point on graph blue
+        peaks.append((point_index,point))
 
-    x_values.append(date_obj)
-    y_values.append(current_close)
+    # check if the rise happens
+    if(fallen and close>=point*(1+percent/100)):
+        rise_points.append((index,close))
+        fallen=False
+        returns.append((close-buy_point)/buy_point)
 
-    if(current_close > high_peak):
-        high_peak = current_close
-    else:
-        # calculate the percentage change from the peak
-        change_percent = round(((high_peak - current_close) / high_peak) * 100, 2)
+# Set the style to dark mode
+# plt.style.use('dark_background')
 
-        # check if the percentage change is greater than or equal to -percent
-        if change_percent >= -(percent*2):
-            print("sell here")
-            fallen = True
-            break
+# Plotting
+plt.figure(figsize=(12, 6))
+plt.plot(historical_data.index, historical_data['Close'], color=color)
+for point, point_color in [(peaks, 'blue'), (fall_points, 'red'), (rise_points, 'green')]:
+    if len(point) > 0:
+        dates, closes = zip(*point)
+        plt.scatter(dates, closes, color=point_color)
 
-        if fallen:
-            # compare the percentage change from the peak to the -(percentage)
-            if change_percent >= -percent:
-                print("buy here")
-                fallen = False
-                break
-
-
-
-# Plot the data
-plt.plot(x_values, y_values, color='blue')
-
-# Plot the data where fallen is True in red color
-fallen_x_values = [x_values[i] for i in range(len(x_values)) if fallen]
-fallen_y_values = [y_values[i] for i in range(len(y_values)) if fallen]
-plt.plot(fallen_x_values, fallen_y_values, color='red')
-
-# Show the plot
+plt.title('BSE Sensex Historical Data')
+plt.xlabel('Date')
+plt.ylabel('Closing Price')
 plt.show()
 
-
-
-    # Determine the indicator value based on the percentage change
-    # indicator = 0 if change_percent <= -40 else 1 if change_percent >= 20 else round(
-    #     (change_percent - (-40)) / (20 - (-40)), 2)
-    
-    # Print date, close value, percentage change, and indicator
-    # print(f"{date_obj.date()}\t{current_close}\t{change_percent}\t{indicator}")
-    
-    # Check conditions for buying and selling
-    # if (change_percent <= -40 and is_buying == 0):
-    #     is_buying = 1
-    #     # print("Buying")
-    #     buy_price = current_close
-    # elif (change_percent >= 20 and is_buying == 1):
-    #     is_buying = 0
-    #     # print("Selling")
-    
-    # # Update peak value if a new peak is found
-    # if (peak is None or peak < current_close and is_buying == 0):
-    #     peak = current_close
-    #     print(f"Peak Date: {date_obj.date()}")
-
-# Print final results
-print("X Peak:", peak)
-print("Current Close:", current_close)
-print("Final Indicator:", indicator) # Here 0 = sell and 1 = buy else hold - based on the percentage
-
-# Determine the final decision based on the indicator value
-if indicator == 0:
-    print("Final Decision: Sell")
-elif indicator == 1:
-    print("Final Decision: Buy")
-else:
-    print("Final Decision: Hold")
+print(f"{percent} Total returns: ", sum(returns)*100)
+print(f"{percent} Average returns: ", calculate_average(returns)*100)
+print(f"{percent} Number of trades: ", len(returns))
