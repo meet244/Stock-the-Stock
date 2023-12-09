@@ -1,6 +1,6 @@
 # Stock the Stock 📈💼
 
-![Static Badge](https://img.shields.io/badge/Streamlit%20-%20red%20?logo=streamlit&labelColor=black&link=https%3A%2F%2Fstock-the-stock.streamlit.app%2F)
+[![Static Badge](https://img.shields.io/badge/Streamlit%20-%20red%20?logo=streamlit&labelColor=black)](https://stock-the-stock.streamlit.app/)
 
 ## About
 The **"Stock the Stock"** app is designed to aid in investment decision-making by analyzing historical stock/index data. It assesses market peaks, falls, and rises to suggest potential buy, hold, or sell indicators. The app implements a strategy inspired by [Warren Buffett](https://en.wikipedia.org/wiki/Warren_Buffett)'s famous quote.
