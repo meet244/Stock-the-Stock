@@ -5,6 +5,8 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 
+st.set_page_config(page_title='Stock the Stock', page_icon='📈')
+
 # Function to calculate the average of a list of numbers
 def calculate_average(numbers):
     if not numbers:
