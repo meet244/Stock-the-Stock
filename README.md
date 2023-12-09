@@ -1,9 +1,13 @@
 # Stock the Stock 📈💼
 
-## Description
+## About
 The **"Stock the Stock"** app is designed to aid in investment decision-making by analyzing historical stock/index data. It assesses market peaks, falls, and rises to suggest potential buy, hold, or sell indicators. The app implements a strategy inspired by [Warren Buffett](https://en.wikipedia.org/wiki/Warren_Buffett)'s famous quote.
 
 >### "*Be fearful when others are greedy and be greedy when others are fearful.*" - Warren Buffett
+
+## Let's try
+
+🌐 To visit the stable build of app, click [Here](https://stock-the-stock.streamlit.app/). 👈
 
 ## Images
 - **Graph Representation** 📊:
