@@ -12,7 +12,6 @@ def calculate_average(numbers):
     return sum(numbers) / len(numbers)
 
 # Define the BSE Sensex ticker
-# bse_sensex = yf.Ticker("TATAMOTORS.NS")
 bse_sensex = yf.Ticker("^BSESN")
 
 # Get historical data for BSE Sensex from the start date
@@ -42,8 +41,7 @@ st.markdown('## Select Stock/Index')
 st.caption("Please enter the stock/index you want to analyze.")
 # yahoo finance link
 st.markdown("Get Stock/Index codes from [Yahoo Finance](https://finance.yahoo.com/)")
-# stock_options = ["^BSESN", "TATAMOTORS.NS", "RELIANCE.NS", "HDFCBANK.NS"] # Add more options as needed
-selected_stock = st.text_input("", "^BSESN") # Allow user to enter text, default value is "^BSESN"
+selected_stock = st.text_input("Stock Name", "^BSESN", label_visibility="hidden") # Allow user to enter text, default value is "^BSESN"
 
 col1, col2, col3, col4, col5, col6, col7 = st.columns(7)  # Create 7 columns
 
@@ -51,7 +49,6 @@ col1, col2, col3, col4, col5, col6, col7 = st.columns(7)  # Create 7 columns
 with col1:
     if st.button("^BSEN") and selected_stock != "^BSESN":
         selected_stock = "^BSESN"
-        
 
 with col2:
     if st.button("AAPL"):
@@ -80,7 +77,7 @@ with col7:
 # Define a percentage change threshold
 st.markdown('## Select the Percentage')
 st.caption("The percentage change threshold is used to determine the market fall and rise. The higher the percentage, the more the market has to fall/rise to be considered a fall/rise. 20% is recommended for most stocks.")
-percent = st.slider("", 5, 40, 20, format="%d%%") # Allow user to select percentage from range 5-40
+percent = st.slider("Select Percentage",min_value=5,max_value=40,value=20, format="%d%%", label_visibility="hidden") # Allow user to select percentage from range 5-40
 
 # Initialize the ticker
 ticker = yf.Ticker(selected_stock)
@@ -122,9 +119,6 @@ for index, row in historical_data.iterrows():
         fallen=False
         returns.append((close-buy_point)/buy_point)
 
-# Set the style to dark mode
-# plt.style.use('dark_background')
-
 # Streamlit app
 st.markdown(f'## {selected_stock} Historical Data')
 st.caption("The historical data of the stock/index is plotted below.")
@@ -143,7 +137,6 @@ ax.tick_params(axis='x', colors='white')
 ax.tick_params(axis='y', colors='white')
 ax.set_facecolor('#0E1117')  # Set the background color to black
 st.pyplot(fig)
-
 
 st.markdown('## Buy-Hold-Sell Indicator')
 st.caption("The indicator shows whether you should buy, hold or sell the stock/index based on the current status of the market.")
