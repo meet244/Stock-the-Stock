@@ -1,44 +1,40 @@
-import yfinance as yf
-import matplotlib.pyplot as plt
+import streamlit as st
 
-# Fetch historical data for Sensex
-sensex = yf.download('^BSESN', start='2018-01-01', end='2023-12-31')
+# Create buttons in columns
+st.markdown("<h2>Horizontal Buttons using Columns</h2>", unsafe_allow_html=True)
+st.markdown("<h3>Buttons in a horizontal layout using columns:</h3>", unsafe_allow_html=True)
 
-# Initialize variables
-highest_price = 0
-lowest_dip = 0
-dips = []
-rises = []
+col1, col2, col3, col4, col5, col6, col7= st.columns(7)  # Create 10 columns
 
-for index, row in sensex.iterrows():
-    current_price = row['Close']
+# Place buttons in the columns
+with col1:
+    st.button("Button 1")
 
-    # Update highest price
-    if current_price > highest_price:
-        highest_price = current_price
+with col2:
+    st.button("Button 2")
 
-    # Check for dip
-    if highest_price * 0.8 >= current_price:
-        dips.append((index, current_price))
-        lowest_dip = current_price
+with col3:
+    st.button("Button 3")
 
-    # Check for rise
-    if lowest_dip * 1.4 <= current_price:
-        rises.append((index, current_price))
-        lowest_dip = 0
+with col4:
+    st.button("Button 4")
 
-# Plot the graph
-plt.figure(figsize=(10, 6))
-plt.plot(sensex.index, sensex['Close'], color='blue', label='Sensex')
+with col5:
+    st.button("Button 5")
 
-dip_dates, dip_values = zip(*dips)
-rise_dates, rise_values = zip(*rises)
+with col6:
+    st.button("Button 6")
 
-plt.scatter(dip_dates, dip_values, color='red', label='Dips')
-plt.scatter(rise_dates, rise_values, color='green', label='Rises')
+with col7:
+    st.button("Button 7")
 
-plt.xlabel('Date')
-plt.ylabel('Sensex')
-plt.title('Sensex Stock Analysis')
-plt.legend()
-plt.show()
+with col8:
+    st.button("Button 8")
+
+with col9:
+    st.button("Button 9")
+
+with col10:
+    st.button("Button 10")
+
+
