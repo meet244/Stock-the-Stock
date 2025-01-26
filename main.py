@@ -126,7 +126,7 @@ st.markdown(f'## {selected_stock} Historical Data')
 st.caption("The historical data of the stock/index is plotted below.")
 
 # Plotting
-fig, ax = plt.subplots(figsize=(12, 6), facecolor='#ffffff')
+fig, ax = plt.subplots(figsize=(12, 6), facecolor='#f2f2f2')
 ax.plot(historical_data.index, historical_data['Close'], color=color)
 for pt, point_color in [(peaks, 'yellow'), (fall_points, 'red'), (rise_points, 'green')]:
     if len(pt) > 0:
@@ -137,7 +137,7 @@ ax.set_xlabel('Date', color='white')
 ax.set_ylabel('Closing Price', color='white')
 ax.tick_params(axis='x', colors='white')
 ax.tick_params(axis='y', colors='white')
-ax.set_facecolor('#ffffff')  # Set the background color to black
+ax.set_facecolor('#f2f2f2')  # Set the background color to black
 st.pyplot(fig)
 
 st.markdown('## Buy-Hold-Sell Indicator')
@@ -160,16 +160,16 @@ else:
     text_position = pointer_position  # Position of the text "hold"
 
 # Plot the buy-hold-sell bar with gradient color and pointer
-fig, ax = plt.subplots(figsize=(6, 0.5), facecolor='#ffffff')
+fig, ax = plt.subplots(figsize=(6, 0.5), facecolor='#f2f2f2')
 ax.imshow([color_map], aspect='auto', extent=(0, 1, 0, 1))
-ax.axvline(x=pointer_position, color='white', linewidth=2, ymin=-0.2, ymax=1.2, clip_on=False)
+ax.axvline(x=pointer_position, color='black', linewidth=2, ymin=-0.2, ymax=1.2, clip_on=False)
 ax.set_axis_off()
 
 # Add text labels
 ax.text(0.05, 0.5, 'Buy', transform=ax.transAxes, ha='left', va='center', color='white')
 ax.text(0.5, 0.5, 'Hold', transform=ax.transAxes, ha='center', va='center')
 ax.text(0.95, 0.5, 'Sell', transform=ax.transAxes, ha='right', va='center', color='white')
-ax.set_facecolor('#ffffff')  # Set the background color to black
+ax.set_facecolor('#f2f2f2')  # Set the background color to black
 st.pyplot(fig)
 
 
